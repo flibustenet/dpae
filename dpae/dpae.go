@@ -122,6 +122,9 @@ func (d *Dpae) Send() error {
 
 	// send ziped bufgz
 	req, err := http.NewRequest("POST", UrlDepot, bufgz)
+	if err != nil {
+		return fmt.Errorf("build request POST %s: %v", UrlDepot, err)
+	}
 	req.Header.Add("Content-Type", "application/xml")
 	req.Header.Add("Authorization", "DSNLogin jeton="+d.Jeton)
 	req.Header.Set("Content-Encoding", "gzip")
@@ -207,9 +210,12 @@ func (d *Dpae) retour(retry int) error {
 	retry = retry + 1
 
 	if d.IdFlux == "" {
-		return fmt.Errorf("No IdFlux")
+		return fmt.Errorf("no IdFlux")
 	}
 	req, err := http.NewRequest("GET", UrlConsultation+d.IdFlux, nil)
+	if err != nil {
+		return fmt.Errorf("build request GET %s: %v", UrlConsultation+d.IdFlux, err)
+	}
 	req.Header.Add("Authorization", "DSNLogin jeton="+d.Jeton)
 
 	client := &http.Client{Timeout: TimeOut}
@@ -228,7 +234,7 @@ func (d *Dpae) retour(retry int) error {
 	consultation := &Consultation{}
 	err = json.Unmarshal(data, &consultation)
 	if err != nil {
-		return fmt.Errorf("Unmarshal retours on %v : %s : %v", d, data, err)
+		return fmt.Errorf("unmarshal retours on %v : %s : %v", d, data, err)
 	}
 	urls := []string{}
 	for _, flux := range consultation.Retours.Flux {
@@ -245,6 +251,9 @@ func (d *Dpae) retour(retry int) error {
 
 	for _, url := range urls {
 		req, err = http.NewRequest("GET", url, nil)
+		if err != nil {
+			return fmt.Errorf("build request GET %s: %v", url, err)
+		}
 		req.Header.Add("Authorization", "DSNLogin jeton="+d.Jeton)
 		client := &http.Client{Timeout: TimeOut}
 		resp, err = client.Do(req)
@@ -274,15 +283,15 @@ func (d *Dpae) retour(retry int) error {
 			return UErr(nil, "Non conforme : "+d.CertifError)
 		}
 		if !strings.Contains(str, `<etat_conformite>OK</etat_conformite>`) {
-			return fmt.Errorf("Devrait contenir conformite %v\n%s", d, str)
+			return fmt.Errorf("devrait contenir conformite %v\n%s", d, str)
 		}
 		certif := reCertificatConformite.FindStringSubmatch(str)
 		if len(certif) != 2 {
-			return fmt.Errorf("Ne trouve pas de certificat %v : %s\n%s", d, certif, str)
+			return fmt.Errorf("ne trouve pas de certificat %v : %s\n%s", d, certif, str)
 		}
 		d.Certificat = certif[1]
 		if len(d.Certificat) < 10 {
-			return fmt.Errorf("Certificat incorrect %v \n%s", d, str)
+			return fmt.Errorf("certificat incorrect %v \n%s", d, str)
 		}
 		break
 	}
@@ -290,7 +299,7 @@ func (d *Dpae) retour(retry int) error {
 		return d.retour(retry)
 	}
 	if len(d.Certificat) < 10 {
-		return fmt.Errorf("Pas de certificat sur %v", d)
+		return fmt.Errorf("pas de certificat sur %v", d)
 	}
 	return nil
 }
