@@ -7,9 +7,13 @@ Installation
 
 `go get github.com/flibustenet/dpae`
 
-Compilation
+Installer l'exécutable `dpae`
 
-`go build main.go`
+`go install`
+
+Ou compiler sur place
+
+`go build -o run_dpae`
 
 Utilisation
 -----------
@@ -18,11 +22,11 @@ Créer un fichier `dpae_test.json` en suivant l'exemple `dpae_sample.json`
 
 Tester ce fichier avec l'exécutable compilé précédement.
 
-`./dpae dpae_test.json`
+`./run_dpae dpae_test.json`
 
 Il va renvoyer `idflux` et le certificat.
 
-`./dpae -v dpae_test.json`
+`./run_dpae -v dpae_test.json`
 
 Idem mais affiche également le fichier xml envoyé.
 
@@ -31,6 +35,7 @@ Librairie
 
 Il est également possible de l'utiliser sous forme d'une librairie en Go
 en prenant exemple sur le fichier `main.go`.
+
 Soit en lisant un fichier json soit en construisant directement le
 struct `dpae.Dpae`
 
