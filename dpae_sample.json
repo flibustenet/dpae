@@ -1,0 +1,38 @@
+{
+    "TestIndicator":1,
+    "Identifiants":{
+        "SIRET": "....",
+        "Nom": "....",
+        "Prenom": "....",
+        "MotDePasse": "....",
+        "Service": "25"
+    },
+    "Employer":{
+        "Designation": "...",
+        "SIRET": "...",
+        "URSSAFCode":"...",
+        "HealthService": "...",
+        "APE": "...",
+        "Phone": "....",
+        "Adress": "....",
+        "Town": "....",
+        "Postal": "...."
+    },
+    "Employee":{
+        "Surname": "...",
+        "ChristianName": "...",
+        "Sex": 2,
+        "NIR":"2...",
+        "NIRKey":"..",
+        "BirthDate": "2001-11-31",
+        "BirthTown": "...",
+        "BirthDepartment": "..."
+    },
+    "Contract":{
+        "NatureCode": "CDD",
+        "StartContractDate":"2021-11-01",
+        "StartContractTime":"08:00",
+        "EndContractDate":"2021-12-31"
+    }
+}
+
